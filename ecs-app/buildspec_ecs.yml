@@ -1,15 +1,24 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      java: corretto21
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 527165097816.dkr.ecr.ap-south-1.amazonaws.com
+      - IMAGE_URI=527165097816.dkr.ecr.ap-south-1.amazonaws.com/demo-app:latest
 
   build:
     commands:
-      - cd ecs-app
-      - mvn clean package
+      - echo "Building the Docker image..."
+      - docker build -t demo-app ecs-app/.
+      - docker tag demo-app:latest $IMAGE_URI
+
+  post_build:
+    commands:
+      - echo "Pushing image..."
+      - docker push $IMAGE_URI
+      - printf '{"ImageURI":"%s"}' $IMAGE_URI > imageDetail.json
 
 artifacts:
   files:
-    - ecs-app/target/*.jar
+    - imageDetail.json
