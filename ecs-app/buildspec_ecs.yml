@@ -22,7 +22,7 @@ phases:
     commands:
       - echo "Pushing Docker image..."
       - docker push $IMAGE_URI
-      - printf '[{"name":"YOUR_CONTAINER_NAME","imageUri":"%s"}]' "$IMAGE_URI" > imagedefinitions.json
+      - printf '[{"name":"demo-app-container","imageUri":"%s"}]' "$IMAGE_URI" > imagedefinitions.json
 
 artifacts:
   files:
