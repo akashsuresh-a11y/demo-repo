@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY target/*.jar app.jar
+COPY springboot/ms-demo-service/build/libs/*.jar app.jar
 
 EXPOSE 8080
 

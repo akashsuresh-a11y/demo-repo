@@ -9,13 +9,18 @@ phases:
 
   build:
     commands:
-      - echo "Building the Docker image..."
-      - docker build -t demo-app ecs-app/.
+      - echo "Building Spring Boot application..."
+      - cd springboot/ms-demo-service
+      - chmod +x gradlew
+      - ./gradlew bootJar
+      - cd ../..
+      - echo "Building Docker image..."
+      - docker build -t demo-app -f ecs-app/Dockerfile .
       - docker tag demo-app:latest $IMAGE_URI
 
   post_build:
     commands:
-      - echo "Pushing image..."
+      - echo "Pushing Docker image..."
       - docker push $IMAGE_URI
       - printf '{"ImageURI":"%s"}' $IMAGE_URI > imageDetail.json
 
