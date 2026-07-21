@@ -4,7 +4,8 @@ phases:
   build:
     commands:
       - echo "Packaging Lambda function"
-
+      - cd lambda-app
+      - zip -r ../lambda.zip .
 artifacts:
   files:
-    - lambda-app/lambda_function.py
+    - lambda.zip
